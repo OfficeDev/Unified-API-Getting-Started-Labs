@@ -5,11 +5,23 @@
 	<title>My Organization</title>
 </head>
 <body>
-
+    <button onclick="DoLogon()">Login with Office 365</button>
+    <br/>
+    <div id="results">
+        <div style="width: 50%; float: left">
+            <h2 id="manager"></h2>
+            <h2 id="user"></h2>
+            <h2 id="reports"></h2>
+        </div>
+        <div style="width: 50%; float: right">
+            <h2 id="filesTitle"></h2>
+            <ul id="files"></ul>
+        </div>
+    </div>
 
     <script type="text/javascript">
         var clientid = "0fe23ba5-f632-4a93-a898-b6b42adbfe2b";
-        var tenantid = "2468d977-0569-4629-a8cb-08a3fb0a3763";
+        var tenantid = "dxdemos.onmicrosoft.com";
         var graphResource = "00000003-0000-0000-c000-000000000000";
         var state = "somestate";
         var nonce = "somenonce";
@@ -32,52 +44,61 @@
                                                                                "&prompt=none&nonce=undefined";
         }
 
-        function queryGraph() {
+        function queryGraph(path) {
             //Get user's details
-            var query = "https://graph.microsoft.com/beta/me";
+            var query = "https://graph.microsoft.com/beta/" + path;
             var req = new XMLHttpRequest();
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
             req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
             req.send();
             var result = JSON.parse(req.responseText);
-            user.innerHTML = "User e-mail: " + result.mail;
+            user.innerHTML = "Employee: " + result.displayName;
+            filesTitle.innerHTML = result.displayName + "'s files:";
 
             //Get the manager's details
             req = new XMLHttpRequest();
-            query = "https://graph.microsoft.com/beta/me/manager";
+            query = "https://graph.microsoft.com/beta/" + path + "/manager";
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
             req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
             req.send();
-            var result = JSON.parse(req.responseText);
-            manager.innerHTML = "Manager: " + result.displayName;
+            if (req.status === 200) {
+                result = JSON.parse(req.responseText);
+                manager.innerHTML = "Manager: <a href='javascript:queryGraph(\"myorganization/users/" + result.objectId + "\")'>" + result.displayName + "</a>";
+            }
+            else
+                manager.innerHTML = "Manager: ";
 
             //Get direct reports
             req = new XMLHttpRequest();
-            query = "https://graph.microsoft.com/beta/me/directReports";
+            query = "https://graph.microsoft.com/beta/" + path + "/directReports";
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
             req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
             req.send();
-            var result = JSON.parse(req.responseText);
+            result = JSON.parse(req.responseText);
             reports.innerHTML = "Reports: ";
             result.value.forEach(function (item) {
-                reports.innerHTML += "<br/>" + item.displayName;
+                reports.innerHTML += "<a href='javascript:queryGraph(\"myorganization/users/" + item.objectId + "\")'>" + item.displayName + "</a>, ";
             });
+            if (reports.innerHTML.length > 9)
+                reports.innerHTML = reports.innerHTML.substring(0, reports.innerHTML.length - 2);
 
             //Get files
             req = new XMLHttpRequest();
-            query = "https://graph.microsoft.com/beta/me/files";
+            query = "https://graph.microsoft.com/beta/" + path + "/files";
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
             req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
             req.send();
-            var result = JSON.parse(req.responseText);
-            reports.innerHTML = "Files: ";
-            result.value.forEach(function (item) {
-                reports.innerHTML += "<br/>" + item.name;
-            });
+            files.innerHTML = "";
+            if (req.status === 200) {
+                result = JSON.parse(req.responseText);
+                result.value.forEach(function (item) {
+                    files.innerHTML += "<li>" + item.name + "</li>";
+                });
+            }
         }
 
         //Read the current URL query string
@@ -89,7 +110,7 @@
         }
         else if (params['access_token'] != null) {
             graphToken = params['access_token'];
-            queryGraph();
+            queryGraph("me");
         }
 
         function parseQueryString(url) {
