@@ -37,7 +37,7 @@ There are a number of IDEs, templates, and generators for creating the project s
 		}
 6. Return to the command prompt and use bower to import boostrap, angular, angular-route, and adal-angular.
 
-		> bower bootstrap angular angular-route adal-angular --save
+		> bower install bootstrap angular angular-route adal-angular --save
 7. Add an **index.html** file and **app** folder to the project root directory.
 
 ## Step 3: Build the App ##
