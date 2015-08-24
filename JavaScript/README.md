@@ -1,5 +1,5 @@
-# Getting Started with the Office 365 Unified API (AngularJS) #
-This folder contains a hands-on lab for getting started with the Office 365 Unified API in an AngularJS single-page application (SPA). This solution is part of a broader getting started series across a number of platforms/languages.
+# Getting Started with the Office 365 Unified API (JavaScript) #
+This folder contains a hands-on lab for getting started with the Office 365 Unified API using raw JavaScript (no libraries...not even JQuery). This solution is part of a broader getting started series across a number of platforms/languages, including AngularJS and Node.js.
 
 ## Step 1: Register the Application ##
 1.	Login to the Azure Management Portal at [https://manage.azurewebsites.net](https://manage.azurewebsites.net "https://manage.azurewebsites.net") using an account that has access to the O365 Organization’s Azure Active Directory 
@@ -19,29 +19,8 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
 15.	Open the Application Manifest in Notepad and change the **oauth2AllowImplicitFlow** to **true**
 16.	Save and close the Application Manifest before uploading it back into Azure by clicking the **MANAGE MANIFEST** button in the footer and selecting **Upload Manifest**
 
-## Step 2: Provision the Project Scaffolding ##
-There are a number of IDEs, templates, and generators for creating the project scaffolding. This hands-on lab will leverage Node Package Manager (NPM), Bower, and Visual Studio Code, but you can use anything you are comfortable with.
-
-1. Create a new project folder somewhere on your development machine.
-2. Open a command prompt and change the directory to the new folder created in the previous step.
-3. Initialize bower by typing **bower init**
-
-		> bower init
-4. Create a bower configuration file named **bowerrc** in the root directory.
-
-		> touch .bowerrc
-5. Open the new bowerrc file and specify a directory location for script libraries to download.
-
-		{
-			"directory": "lib"
-		}
-6. Return to the command prompt and use bower to import boostrap, angular, angular-route, and adal-angular.
-
-		> bower bootstrap angular angular-route adal-angular --save
-7. Add an **index.html** file and **app** folder to the project root directory.
-
-## Step 3: Build the App ##
-1. Open the project folder in your favorite web editor (Visual Studio Code is used for illustration, but it could be any editor).
+## Step 2: Build the App ##
+1. Create an index.html file, which will contain all markup and scripts for the project.
 2. Open the **index.html** file and add the core HTML elements such as html, head, body, etc (most web editors have commands to generate this).
 
 		<!DOCTYPE html>
@@ -54,221 +33,145 @@ There are a number of IDEs, templates, and generators for creating the project s
 			<div ng-view></div>
 		</body>
 		</html>
-3. Modify **index.html** to reference **bootstrap.css** in the **head** of and all the scripts imported via bower  (**jquery**, **bootstrap**, **angular**, **angular-route**, **adal.js**, **adal-angular.js**) into the **body**.
+3. Modify **index.html** with the basic layout for the app into the **body**. It should have two columns...one for org structure and one for the selected users files.
 
-		<!DOCTYPE html>
-		<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<title>My Organization</title>
-			<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
-		</head>
-		<body>
-			<!-- JQuery and Bootstrap references -->
-			<script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
-			<script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
-			
-			<!-- Angular reference -->
-			<script type="text/javascript" src="lib/angular/angular.min.js"></script>
-			<script type="text/javascript" src="lib/angular-route/angular-route.min.js"></script>
-			
-			<!-- ADAL reference -->
-			<script type="text/javascript" src="lib/adal-angular/dist/adal.min.js"></script>
-			<script type="text/javascript" src="lib/adal-angular/dist/adal-angular.min.js"></script>
-			
-			<!-- App scripts -->
-			<script type="text/javascript" src="app/app.js"></script>
-		</body>
-		</html>
-4. Add an **ng-app** attribute directive to the body element.
+	    <button onclick="DoLogon()">Login with Office 365</button>
+	    <br/>
+	    <div id="results">
+	        <div style="width: 50%; float: left">
+	            <h2 id="manager"></h2>
+	            <h2 id="user"></h2>
+	            <h2 id="reports"></h2>
+	        </div>
+	        <div style="width: 50%; float: right">
+	            <h2 id="filesTitle"></h2>
+	            <ul id="files"></ul>
+	        </div>
+	    </div>
+4. Directly below the page markup (but still within the body), add a script block for the page logic.
 
-		<body ng-app="app">
-5. Add a div element inside the body and include an **ng-view** attribute directive.
+	    <script type="text/javascript">
+		</script>
+5. Start by defining some constants specific to the app you registered in the previous section. This includes clientid and tenantid (the graphResource will be the same as below).
 
-		<div ng-view></div>
-6. Create an **app.js** file in the **app** folder and define angular modules for **app.services**, **app.controllers**, and **app** (with dependency references on the other two modules).
+        var clientid = "0fe23ba5-f632-4a93-a898-b6b42adbfe2b";
+        var tenantid = "dxdemos.onmicrosoft.com";
+        var graphResource = "00000003-0000-0000-c000-000000000000";
+        var state = "somestate";
+        var nonce = "somenonce";
+        var graphToken = "";
+        var myUrl = window.location;
+6. Next, define a utility function for parsing URL parameters.
 
-	    (function() {
-			"use strict";
-			
-			angular.module("app.services", []);
-			
-			angular.module("app.controllers", []);
+        function parseQueryString(url) {
+            var params = {}, queryString = url.substring(1),
+                regex = /([^&=]+)=([^&]*)/g, m;
+            while (m = regex.exec(queryString)) {
+                params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+            }
+            return params;
+        }
+7. The first step in an implicit OAuth flow with Azure AD is to redirect the user to login and acquire token.
 
-			angular.module("app", ["app.services", "app.controllers"]);
-		})();
-7. This Angular app will leverage angular routing and the Azure Active Directory Authentication Library (ADAL) for authentication/token, so extend the app module with the **ngRoute** and **AdalAngular** dependencies.
+        //This is how we log on to AAD
+        function DoLogon(p) {
+            window.location = "https://login.windows.net/" + tenantid + "/oauth2/authorize" +
+				"?response_type=id_token" + 
+				"&client_id=" + clientid +
+				"&redirect_uri=" + encodeURIComponent(myUrl) + 
+				"&state=" + state + 
+				"&nonce=" + nonce;
+        }
+8. The token returned from DoLogon is a AAD token, so you need another function to get a resource-specific token for the Unified API.
 
-		angular.module("orgExplorer", [app.services", "app.controllers", "ngRoute", "AdalAngular"])
-8. Next, configure the module with routes using the **$routeProvider** dependency. Notice the additional ADAL dependencies and the use of **requireADLogin** on each route (this will force a login when true).
+        //This is how we get an authorized access_token for the graph
+        function requestTokenForGraph() {
+            //We have a token for AAD, now we need a token for office graph
+            window.location = "https://login.windows.net/" + tenantid + "/oauth2/authorize" + 
+				"?response_type=token" + 
+				"&client_id=" + clientid + 
+				"&resource=" + graphResource +
+				"&redirect_uri=" + encodeURIComponent(myUrl) + 
+				"&state=" + state +
+				"&prompt=none" + 
+				"&nonce=undefined";
+        }
+9. Next, create a function to perform queries against the Unified API given a path parameter. The path will either be "me" or in the form "myorganization/users/{some user id}".
 
-		angular.module("orgExplorer", [app.services", "app.controllers", "ngRoute", "AdalAngular"])
-		.config(["$routeProvider", "$httpProvider", "adalAuthenticationServiceProvider", function ($routeProvider, $httpProvider, adalProvider) {
-			$routeProvider.when("/login", {
-				controller: "loginCtrl",
-				templateUrl: "/app/templates/view-login.html",
-				requireADLogin: false
-			})
-			.when("/user", {
-				controller: "meCtrl",
-				templateUrl: "/app/templates/view-user.html",
-				requireADLogin: true
-			})
-			.when("/user/:id", {
-				controller: "userCtrl",
-				templateUrl: "/app/templates/view-user.html",
-				requireADLogin: true
-			})
-			.otherwise({ redirectTo: "/login" });
-9. Below the route, you need to initialize the ADAL Provider with app details from the registration you did earlier. Make sure you update the details below with your **tenant** and **clientId**.
+        function queryGraph(path) {
+		}
+10. Add script using XMLHttpRequest to get the user.
 
-		adalProvider.init({
-			instance: "https://login.microsoftonline.com/",
-			tenant: "dxdemos.onmicrosoft.com",
-			clientId: "0fe23ba5-f632-4a93-a898-b6b42adbfe2b",
-			endpoints: {
-				"https://graph.microsoft.com/": "https://graph.microsoft.com"
-			}
-		}, $httpProvider);
-10. The completed **app** module should look as follows.
-11. Next, you will build out the app.services module, which will use an angular factory to provide services across the controllers. Start by extending the module with a factory and dependencies for **$http** and **$q**.
+        //Get user's details
+        var query = "https://graph.microsoft.com/beta/" + path;
+        var req = new XMLHttpRequest();
+        req.open("GET", query, false);
+        req.setRequestHeader("Authorization", "Bearer " + graphToken);
+        req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
+        req.send();
+        var result = JSON.parse(req.responseText);
+        user.innerHTML = "Employee: " + result.displayName;
+        filesTitle.innerHTML = result.displayName + "'s files:";
+11. Add script using XMLHttpRequest to get the users manager. The manager could be null, so check accordingly.
 
-		angular.module("app.services", [])
-		.factory("appService", ["$http", "$q", function ($http, $q) {
-			var appService = {};
-			
-			return appService;
-		}]);
-12. Add a **getUser** function on the **appService** that accepts a **path** parameter and returns a deferred promise.
+        //Get the manager's details
+        req = new XMLHttpRequest();
+        query = "https://graph.microsoft.com/beta/" + path + "/manager";
+        req.open("GET", query, false);
+        req.setRequestHeader("Authorization", "Bearer " + graphToken);
+        req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
+        req.send();
+        if (req.status === 200) {
+            result = JSON.parse(req.responseText);
+            manager.innerHTML = "Manager: <a href='javascript:queryGraph(\"myorganization/users/" + result.objectId + "\")'>" + result.displayName + "</a>";
+        }
+        else
+            manager.innerHTML = "Manager: ";
+12. Add script using XMLHttpRequest to get the users direct reports.
 
-		angular.module("app.services", [])
-		.factory("appService", ["$http", "$q", function ($http, $q) {
-			var appService = {};
-			
-			appService.getUser = function(path) {
-				var deferred = $q.defer();
-				
-				//make Unified API calls HERE
-					
-				return deferred.promise;
-			};
-			
-			return appService;
-		}]);
-13. Next, complete the getUser function to make four different calls to the Unified API. One for the **user** (/), one for their **manager** (/manager), one for their **directReports** (/directReports), and one for their **files** (/files). Make sure you wait for all four calls to return before you resolve the deferred promise.
+        //Get direct reports
+        req = new XMLHttpRequest();
+        query = "https://graph.microsoft.com/beta/" + path + "/directReports";
+        req.open("GET", query, false);
+        req.setRequestHeader("Authorization", "Bearer " + graphToken);
+        req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
+        req.send();
+        result = JSON.parse(req.responseText);
+        reports.innerHTML = "Reports: ";
+        result.value.forEach(function (item) {
+            reports.innerHTML += "<a href='javascript:queryGraph(\"myorganization/users/" + item.objectId + "\")'>" + item.displayName + "</a>, ";
+        });
+        if (reports.innerHTML.length > 9)
+            reports.innerHTML = reports.innerHTML.substring(0, reports.innerHTML.length - 2);
+13. Add script using XMLHttpRequest to get the users files from OneDrive for Business. Notice you can use the same access token and how easy the Unified API makes discoverability of the API end-point for files.
 
-		angular.module("app.services", [])
-		.factory("appService", ["$http", "$q", function ($http, $q) {
-			var appService = {};
-			
-			appService.getUser = function(path) {
-				var deferred = $q.defer();
-				
-				//setup response
-				var user = { user: null, manager: null, directReports: null, files: null };
-				
-				//get the user
-				$http.get("https://graph.microsoft.com/beta/" + path).then(function(r) { 
-					user.user = r.data;
-					if (user.user !== null && user.manager !== null && user.directReports !== null &&
-					user.files !== null)
-						deferred.resolve(user); 
-				});
-				//get the manager
-				$http.get("https://graph.microsoft.com/beta/" + path + "/manager").then(function(r) { 
-					user.manager = r.data;
-					if (user.user !== null && user.manager !== null && user.directReports !== null &&
-					user.files !== null)
-						deferred.resolve(user); 
-				}, function(er) {
-					user.manager = {};
-					if (user.user !== null && user.manager !== null && user.directReports !== null &&
-					user.files !== null)
-						deferred.resolve(user); 
-				});
-				//get the directReports
-				$http.get("https://graph.microsoft.com/beta/" + path + "/directReports").then(function(r) { 
-					user.directReports = r.data;
-					if (user.user !== null && user.manager !== null && user.directReports !== null &&
-					user.files !== null)
-						deferred.resolve(user); 
-				});
-				//get the files
-				$http.get("https://graph.microsoft.com/beta/" + path + "/files").then(function(r) { 
-					user.files = r.data;
-					if (user.user !== null && user.manager !== null && user.directReports !== null &&
-					user.files !== null)
-						deferred.resolve(user); 
-				}, function(er) {
-					user.files = {};
-					if (user.user !== null && user.manager !== null && user.directReports !== null &&
-					user.files !== null)
-						deferred.resolve(user); 
-				});
-					
-				return deferred.promise;
-			};
-			
-			return appService;
-		}]);
-14. Next, modify the app.controllers module with the three modules referenced in the routes (**loginCtrl**, **meCtrl**, **userCtrl**). The loginCtrl should handle the authentication using the adalAuthenticationService dependency.
+        //Get files
+        req = new XMLHttpRequest();
+        query = "https://graph.microsoft.com/beta/" + path + "/files";
+        req.open("GET", query, false);
+        req.setRequestHeader("Authorization", "Bearer " + graphToken);
+        req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
+        req.send();
+        files.innerHTML = "";
+        if (req.status === 200) {
+            result = JSON.parse(req.responseText);
+            result.value.forEach(function (item) {
+                files.innerHTML += "<li>" + item.name + "</li>";
+            });
+        }
+11. Finally, add some inline script at the bottom of the script block to handle page routing.
 
-		angular.module("orgExplorer.controllers", [])
-		.controller("loginCtrl", ["$scope", "$location", "adalAuthenticationService", "appService", function ($scope, $location, adalService, appService) {
-		}])
-		.controller("meCtrl", ["$scope", "appService", function ($scope, appService) {
-		}])
-		.controller("userCtrl", ["$scope", "$routeParams", "appService", function ($scope, $routeParams, appService) {
-		}]);
-15. The **loginCtrl** should check is the user is authenticated using the adalAuthenticationService. If so, take the user to the "**me**" view, otherwise wire up the login button event.
+        //Read the current URL query string
+        var params = parseQueryString(location.hash);
 
-		.controller("loginCtrl", ["$scope", "$location", "adalAuthenticationService", "appService", function ($scope, $location, adalService, appService) {
-			if (adalService.userInfo.isAuthenticated) {
-				$location.path("/user");
-			}
-			
-			$scope.login = function() {
-				adalService.login();	
-			};
-		}])
-16. The **meCtrl** should call **appService.getUser** for the "**me**" path.
-
-		.controller("meCtrl", ["$scope", "appService", function ($scope, appService) {
-			appService.getUser("me").then(function(d) { 
-				$scope.data = d; 
-			});
-		}])
-17. The **userCtrl** should call **appService.getUser** for the user id passed in the **$routeParams.id** parameter. 
-
-		.controller("userCtrl", ["$scope", "$routeParams", "appService", function ($scope, $routeParams, appService) {
-			appService.getUser("myorganization/users/" + $routeParams.id).then(function(d) { 
-				$scope.data = d; 
-			});
-		}]);
-18. Finally, you just need to stub out the two views that are referenced in the routes. Create a **view-login.html** and **view-user.html** in a new **templates** folder under **app**.
-19. Add markup for **view-login.html** (should have **ng-click** attribute directive pointing to the **login**() function).
-
-		<button class="btn btn-primary btn-block" ng-click="login()">Sign-in with Office 365</button>
-20. Add markup for **view-user.html**.
-
-		<div class="row">
-			<div class="col-xs-6">
-				<h2>Manager: <a href="#/user/{{data.manager.objectId}}">{{data.manager.displayName}}</a></h2>
-				<h2>Employee: {{data.user.displayName}}</h2>
-				<h2>Direct Reports: 
-					<span ng-repeat="report in data.directReports.value">
-						<a href="#/user/{{report.objectId}}">{{report.displayName}}</a>
-						<span ng-show="$index < data.directReports.value.length - 1">, </span>
-					</span>
-				</h2>
-			</div>
-			<div class="col-xs-6">
-				<h2 ng-show="data.user.displayName">{{data.user.displayName}}'s files</h2>
-				<ul>
-					<li ng-repeat="file in data.files.value">{{file.name}}</li>
-				</ul>
-			</div>
-		</div>
+        if (params["id_token"] != null) {
+            //If we have the id token, then we need to request the access token for Graph
+            requestTokenForGraph();
+        }
+        else if (params['access_token'] != null) {
+            graphToken = params['access_token'];
+            queryGraph("me");
+        }
 
 ## Step 4: Testing the App ##
 The app should be ready to test. Testing approach will vary based on development environment. Visual Studio provides IIS Express. Other environment could use Node.js to host the application (which might be overkill). For this sample developed on a Mac and Visual Studio Code, we used Superstatic.
