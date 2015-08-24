@@ -14,7 +14,7 @@ Office 365 applications are secured by Azure Active Directory, which comes as pa
 Please select the platform/language of your choice for the lab:
 
 - **Android (coming soon)**
-- **[AngularJS](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/AngularJS)**
+- **[AngularJS](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/AngularJS)**
 - **ASP.NET MVC**
 - **iOS (coming soon)**
 - **JavaScript (raw...no libraries)**
