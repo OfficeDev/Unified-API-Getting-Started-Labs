@@ -17,7 +17,7 @@ Please select the platform/language of your choice for the lab:
 - **[AngularJS](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/AngularJS)**
 - **ASP.NET MVC**
 - **iOS (coming soon)**
-- **JavaScript (raw...no libraries)**
+- **[JavaScript](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/JavaScript) (raw...no libraries)**
 - **Node.js**
 - **PHP**
 - **Python**
