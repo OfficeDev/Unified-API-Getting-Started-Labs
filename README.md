@@ -15,12 +15,12 @@ Please select the platform/language of your choice for the lab:
 
 - **Android (coming soon)**
 - **[AngularJS](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/AngularJS)**
-- **ASP.NET MVC**
+- **ASP.NET MVC (coming soon)**
 - **iOS (coming soon)**
 - **[JavaScript](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/JavaScript) (raw...no libraries)**
-- **Node.js**
-- **PHP**
-- **Python**
-- **Windows 10**
+- **Node.js (coming soon)**
+- **[PHP](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/PHP)**
+- **Python (coming soon)**
+- **Windows 10 (coming soon)**
 
 Don't see your platform/language? Please let use know!
