@@ -1,0 +1,50 @@
+Version 1.0.4
+==========================
+Fix infinite loop when specifying login resource
+Fix #139: Queue callbacks for renewals
+Fix constant definitions and use global in unit tests
+
+Version 1.0.3
+==========================
+Revert the change from prevous release "Move the check for the boolean value isEndPoint in AdalAngular interceptor (issue #127)"
+update minified version of adal and adal_angular. 
+
+Version 1.0.2
+==========================
+Move the check for the boolean value isEndPoint in AdalAngular interceptor (issue #127)
+
+Version 0.0.7
+==========================
+idtoken fix
+
+Version 0.0.6
+==========================
+Fix to refresh token for external endpoints
+Ui router
+
+
+Version 0.0.5
+==========================
+Storage option for localStorage and sessionStorage.
+Simple js sample
+
+Version 0.0.4
+==========================
+Split adal.js to adal.js and adal-angular.js
+Fix interceptor reject message
+Use location.path for route params
+Add grunt minify task
+
+Version 0.0.3
+==========================
+Apply changes for DI strict, 
+Token interceptor fixes.
+
+Version 0.0.2
+==========================
+Fix DI strict mode issue for latest version of Angular
+Fix unknown header errors from token interceptor
+
+Version 0.0.1
+==========================
+Preview Release 

@@ -1,0 +1,18 @@
+<div class="row">
+	<div class="col-xs-6">
+		<h2>Manager: <a href="#/user/{{data.manager.objectId}}">{{data.manager.displayName}}</a></h2>
+		<h2>Employee: {{data.user.displayName}}</h2>
+		<h2>Direct Reports: 
+			<span ng-repeat="report in data.directReports.value">
+				<a href="#/user/{{report.objectId}}">{{report.displayName}}</a>
+				<span ng-show="$index < data.directReports.value.length - 1">, </span>
+			</span>
+		</h2>
+	</div>
+	<div class="col-xs-6">
+		<h2 ng-show="data.user.displayName">{{data.user.displayName}}'s files</h2>
+		<ul>
+			<li ng-repeat="file in data.files.value">{{file.name}}</li>
+		</ul>
+	</div>
+</div>
