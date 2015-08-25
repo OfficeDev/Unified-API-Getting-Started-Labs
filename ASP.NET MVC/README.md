@@ -1,4 +1,4 @@
-# Getting Started with the Office 365 Unified API (PHP) #
+# Getting Started with the Office 365 Unified API (ASP.NET MVC) #
 This folder contains a hands-on lab for getting started with the Office 365 Unified API using ASP.NET MVC. This solution is part of a broader getting started series across a number of platforms/languages.
 
 ## Step 1: Register the Application ##
