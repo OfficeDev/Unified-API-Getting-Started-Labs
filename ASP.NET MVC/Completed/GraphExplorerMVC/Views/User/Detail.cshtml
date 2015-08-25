@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Org Explorer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model GraphExplorerMVC.Models.UserDetailModel
+
+@{ ViewBag.Title = "Org Explorer"; }
+<div class="row">
+    <div class="col-xs-6">
+        <h2>Manager: <a href="/User/Detail?id=@Model.Manager.objectId">@Model.Manager.displayName</a></h2>
+        <h2>User: @Model.User.displayName</h2>
+        <h2>
+            Direct Reports:
+            @for (var i = 0; i < Model.DirectReports.Count; i++)
+            {
+                <span><a href="/User/Detail?id=@Model.DirectReports[i].objectId">@Model.DirectReports[i].displayName</a></span>if (i < Model.DirectReports.Count - 1)
+                {<span>, </span>}
+            }
+        </h2>
+    </div>
+    <div class="col-xs-6">
+        <h2>@Model.User.displayName's files</h2>
+        <ul>
+            @foreach (var file in Model.Files)
+            {
+                <li>@file.name</li>
+            }
+        </ul>
+    </div>
+</div>
