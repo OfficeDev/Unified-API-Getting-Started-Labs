@@ -1,0 +1,6 @@
+<button onclick="login()" class="btn btn-primary btn-block">Login with Office 365</button>
+<script type="text/javascript">
+	function login() {
+		window.location = '{{auth_url}}'.replace(/&amp;/g, '&');;	
+	}
+</script>
