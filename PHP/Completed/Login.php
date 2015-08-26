@@ -34,20 +34,7 @@ if (isset($_GET["code"])) {
 </head>
 <body>
   <div class="container">
-    <div class="page-header page-header-inverted">
-      <h1>My Modern Groups</h1>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <h3>Login Required</h3>
-            <p>My Modern Groups is a web application that queries Office 365 to display the modern groups you are a member of. To query Office 365, you must first login with Office 365 credientals and then grant this application access to query group data.</p>
-            <button type="button" name="button" onclick="login()" class="btn btn-primary btn-block">Login with Office 365</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <button type="button" name="button" onclick="login()" class="btn btn-primary btn-block">Login with Office 365</button>
   </div>
 </body>
 </html>
