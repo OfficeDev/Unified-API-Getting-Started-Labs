@@ -3,21 +3,39 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
 
 ## Step 1: Register the Application ##
 1.	Login to the Azure Management Portal at [https://manage.azurewebsites.net](https://manage.azurewebsites.net "https://manage.azurewebsites.net") using an account that has access to the O365 Organization’s Azure Active Directory 
-2.	Click on the **ACTIVE DIRECTORY** option towards the bottom of the left side menu and select the appropriate directory in the directory listing (you may only have one directory
-3.	Next, click on the **APPLICATIONS** link in the top tab menu to display a list of applications registered in the directory
-4.	Click the **ADD** button in the middle of the footer (don’t confuse this with the +NEW button on the bottom left)
+2.	Click on the **ACTIVE DIRECTORY** option towards the bottom of the left side menu and select the appropriate directory in the directory listing (you may only have one directory).
+![Azure Active Directory](http://i.imgur.com/GbW9j2R.jpg)
+3.	Next, click on the **APPLICATIONS** link in the top tab menu to display a list of applications registered in the directory.
+![AAD Apps](http://i.imgur.com/EMLupXo.jpg)
+4.	Click the **ADD** button in the middle of the footer (don’t confuse this with the +NEW button on the bottom left).
+![Add app](http://i.imgur.com/1dEHMcp.jpg)
 5.	In the **What do you want to do?** dialog, select **Add an application my organization is developing**
-6.	Give the application a **NAME** (ex: Org Explorer) and select **WEB APPLICATION AND/OR WEB API** for the Type and then click the next arrow button
-7.	For App properties, enter a **SIGN-ON URL** and **APP ID URL**. These values will likely be localhost address during testing/development (ex: http://localhost:8000)
-8.	When the application finishes provisioning, click on the **CONFIGURE** link in the top tab menu
-9.	Locate the **CLIENT ID** and copy its value somewhere sage
-10.	Locate the permissions to other applications section and click on the Add application button to launch the Permissions to other applications dialog
-11.	Locate and add **Office 365 unified API (preview)** before clicking the check button to close the dialog
-12.	Add Delegated Permissions for **Access directory as signed-in user** and **Read signed-in user's files**
-13.	Click the **SAVE** button in the footer to save the updated application permissions
-14.	Click on the **MANAGE MANIFEST** button in the footer and then select **Download Manifest** to download the application manifest to a safe location
-15.	Open the Application Manifest in Notepad and change the **oauth2AllowImplicitFlow** to **true**
-16.	Save and close the Application Manifest before uploading it back into Azure by clicking the **MANAGE MANIFEST** button in the footer and selecting **Upload Manifest**
+![New app wizard 1](http://i.imgur.com/fm2mHXz.jpg)
+6.	Give the application a **NAME** (ex: Org Explorer) and select **WEB APPLICATION AND/OR WEB API** for the Type and then click the next arrow button.
+![Name app](http://i.imgur.com/wtKPRV4.jpg)
+7.	For App properties, enter a **SIGN-ON URL** and **APP ID URL**. The **SIGN-ON URL** will likely be localhost address during testing/development (ex: http://localhost:8000) and the **APP ID URL** should be globally unique, so something with tenant name is common (ex: https://TENANT.onmicrosoft.com/OrgExplorer).
+![App URLs](http://i.imgur.com/gQt6ofs.jpg)
+8.	When the application finishes provisioning, click on the **CONFIGURE** link in the top tab menu.
+![Configure tab](http://i.imgur.com/szJEaAb.jpg)
+9.	Locate the **CLIENT ID** and copy its value somewhere safe.
+![Client ID](http://i.imgur.com/faOKIs5.jpg)
+10.	Locate the **keys** section and use the duration dropdown to select key good for **2-years**.
+![Generate Keys](http://i.imgur.com/mMzmXT8.jpg)
+11.	Click the **SAVE** button in the footer to generate and display the key (also referred to as a secret or password) and then copy the key somewhere safe (**WARNING**: you cannot display an application key other than after a save, so it is urgent you copy it during this step).
+![Generate Keys](http://i.imgur.com/6b1nDzG.jpg)
+12.	Locate the permissions to other applications section and click on the Add application button to launch the Permissions to other applications dialog.
+![Perms to other applications](http://i.imgur.com/r8kv0vh.jpg)
+13.	Locate and add **Office 365 unified API (preview)** before clicking the check button to close the dialog.
+![Permissions to other apps dialog](http://i.imgur.com/c9wFK5g.jpg)
+14.	Add Delegated Permissions for **Access directory as signed-in user** and **Read signed-in user's files**.
+![Unified API Permissions](http://i.imgur.com/izWrLrk.jpg)
+15.	Click the **SAVE** button in the footer to save the updated application permissions.
+16.	Click on the **MANAGE MANIFEST** button in the footer and then select **Download Manifest** to download the application manifest to a safe location.
+![Download manifest](http://i.imgur.com/hukJyV1.jpg)
+17.	Open the Application Manifest in Notepad and change the **oauth2AllowImplicitFlow** to **true**.
+![implicit flow setting](http://i.imgur.com/n6wrnjU.jpg)
+18.	Save and close the Application Manifest before uploading it back into Azure by clicking the **MANAGE MANIFEST** button in the footer and selecting **Upload Manifest**.
+![upload manifest](http://i.imgur.com/TLICN80.jpg)
 
 ## Step 2: Provision the Project Scaffolding ##
 There are a number of IDEs, templates, and generators for creating the project scaffolding. This hands-on lab will leverage Node Package Manager (NPM), Bower, and Visual Studio Code, but you can use anything you are comfortable with.

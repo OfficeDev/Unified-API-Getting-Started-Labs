@@ -11,14 +11,20 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
 ![Change Authentication](http://i.imgur.com/ANn9f2D.png)
 4.	Click Ok in the  (you may be prompted to sign into your tenant) and the Change Authentication and then Ok on the project wizard dialog to create your new ASP.NET MVC project.
 5.	Login to the Azure Management Portal at [https://manage.azurewebsites.net](https://manage.azurewebsites.net "https://manage.azurewebsites.net") using an account that has access to the O365 Organization’s Azure Active Directory 
-6.	Click on the **ACTIVE DIRECTORY** option towards the bottom of the left side menu and select the appropriate directory in the directory listing (you may only have one directory
-7.	Next, click on the **APPLICATIONS** link in the top tab menu to display a list of applications registered in the directory
+6.	Click on the **ACTIVE DIRECTORY** option towards the bottom of the left side menu and select the appropriate directory in the directory listing (you may only have one directory).
+![Azure Active Directory](http://i.imgur.com/GbW9j2R.jpg)
+7.	Next, click on the **APPLICATIONS** link in the top tab menu to display a list of applications registered in the directory.
+![AAD Apps](http://i.imgur.com/EMLupXo.jpg)
 8.	Locate and select the new application you just finished provisioning in Visual Studio.
-9.	Click on the **CONFIGURE** link in the top tab menu
-10.	Locate the permissions to other applications section and click on the Add application button to launch the Permissions to other applications dialog
-11.	Locate and add **Office 365 unified API (preview)** before clicking the check button to close the dialog
-12.	Add Delegated Permissions for **Access directory as signed-in user** and **Read signed-in user's files**
-13.	Click the **SAVE** button in the footer to save the updated application permissions
+9.	click on the **CONFIGURE** link in the top tab menu.
+![Configure tab](http://i.imgur.com/szJEaAb.jpg)
+10.	Locate the permissions to other applications section and click on the Add application button to launch the Permissions to other applications dialog.
+![Perms to other applications](http://i.imgur.com/r8kv0vh.jpg)
+11.	Locate and add **Office 365 unified API (preview)** before clicking the check button to close the dialog.
+![Permissions to other apps dialog](http://i.imgur.com/c9wFK5g.jpg)
+12.	Add Delegated Permissions for **Access directory as signed-in user** and **Read signed-in user's files**.
+![Unified API Permissions](http://i.imgur.com/izWrLrk.jpg)
+13.	Click the **SAVE** button in the footer to save the updated application permissions.
 
 ## Step 2: Build the App ##
 1. Start by creating a **Utils** folder in the root of the web project and then create a **SettingsHelper.cs** file to store app-specific settings.
