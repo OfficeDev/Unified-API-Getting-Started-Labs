@@ -25,7 +25,7 @@ router.get('/login', function(req, res, next) {
         res.redirect('/');
       }
       else {
-        //ERROR
+        //TODO: ERROR
       }
     });
   }
@@ -81,7 +81,7 @@ function renderView(path, req, res) {
       });
     }
     else {
-      //ERROR
+      //TODO: ERROR
     }
   });
 };
