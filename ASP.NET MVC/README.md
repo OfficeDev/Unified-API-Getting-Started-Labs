@@ -18,7 +18,7 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
 8.	Locate and select the new application you just finished provisioning in Visual Studio.
 9.	click on the **CONFIGURE** link in the top tab menu.
 ![Configure tab](http://i.imgur.com/szJEaAb.jpg)
-10.	Locate the permissions to other applications section and click on the Add application button to launch the Permissions to other applications dialog.
+10.	Locate the **permissions to other applications** section and click on the **Add application** button to launch the Permissions to other applications dialog.
 ![Perms to other applications](http://i.imgur.com/r8kv0vh.jpg)
 11.	Locate and add **Office 365 unified API (preview)** before clicking the check button to close the dialog.
 ![Permissions to other apps dialog](http://i.imgur.com/c9wFK5g.jpg)

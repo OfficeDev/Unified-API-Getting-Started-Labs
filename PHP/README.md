@@ -23,7 +23,7 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
 ![Generate Keys](http://i.imgur.com/mMzmXT8.jpg)
 11.	Click the **SAVE** button in the footer to generate and display the key (also referred to as a secret or password) and then copy the key somewhere safe (**WARNING**: you cannot display an application key other than after a save, so it is urgent you copy it during this step).
 ![Generate Keys](http://i.imgur.com/6b1nDzG.jpg)
-12.	Locate the permissions to other applications section and click on the Add application button to launch the Permissions to other applications dialog.
+12.	Locate the **permissions to other applications** section and click on the **Add application** button to launch the Permissions to other applications dialog.
 ![Perms to other applications](http://i.imgur.com/r8kv0vh.jpg)
 13.	Locate and add **Office 365 unified API (preview)** before clicking the check button to close the dialog.
 ![Permissions to other apps dialog](http://i.imgur.com/c9wFK5g.jpg)
