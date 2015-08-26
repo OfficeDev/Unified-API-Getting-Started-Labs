@@ -18,7 +18,7 @@ Please select the platform/language of your choice for the lab:
 - **[ASP.NET MVC](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/ASP.NET%20MVC)**
 - **iOS (coming soon)**
 - **[JavaScript](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/JavaScript) (raw...no libraries)**
-- **Node.js (coming soon)**
+- **[Node.js](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/Nodejs)**
 - **[PHP](https://github.com/OfficeDev/Unified-API-Getting-Started-Labs/tree/master/PHP)**
 - **Python (coming soon)**
 - **Windows 10 (coming soon)**
