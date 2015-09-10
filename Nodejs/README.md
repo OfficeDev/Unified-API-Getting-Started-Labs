@@ -113,7 +113,7 @@ There are a number of IDEs, templates, and generators for creating the project s
 		exports.getTokenFromCode = getTokenFromCode;
 		exports.getTokenFromRefreshToken = getTokenFromRefreshToken;
 		exports.TOKEN_CACHE_KEY = 'TOKEN_CACHE_KEY';
-		exports.TENANT_CAHCE_KEY = 'TENANT_CAHCE_KEY';
+		exports.TENANT_CACHE_KEY = 'TENANT_CACHE_KEY';
 6. Open **app.js**, which should be almost complete thanks to the express generator. However, you do want to tell the app to listen on a port towards the bottom of the file. Below port 5858 is used, but you can use whatever you prefer.
 
 		app.listen(5858);
@@ -217,7 +217,7 @@ There are a number of IDEs, templates, and generators for creating the project s
 		});
 
 		router.get('/:id', function(req, res, next) {
-		  var tenantId = req.cookies.TENANT_CAHCE_KEY;
+		  var tenantId = req.cookies.TENANT_CACHE_KEY;
 		  renderView(tenantId + '/users/' + req.params.id, req, res);
 		});
 12.  Finally, complete the logic in the login route. It should check for a authorization code coming back from Azure AD (following the initial OAuth redirect).
@@ -228,7 +228,7 @@ There are a number of IDEs, templates, and generators for creating the project s
 		      if (token !== null) {
 		        //cache the refresh token in a cookie and go back to index
 		        res.cookie(authHelper.TOKEN_CACHE_KEY, token.refreshToken);
-		        res.cookie(authHelper.TENANT_CAHCE_KEY, token.tenantId);
+		        res.cookie(authHelper.TENANT_CACHE_KEY, token.tenantId);
 		        res.redirect('/');
 		      }
 		      else {
