@@ -2,7 +2,7 @@
 This folder contains a hands-on lab for getting started with the Office 365 Unified API in an AngularJS single-page application (SPA). This solution is part of a broader getting started series across a number of platforms/languages.
 
 ## Step 1: Register the Application ##
-1.	Login to the Azure Management Portal at [https://manage.azurewebsites.net](https://manage.azurewebsites.net "https://manage.azurewebsites.net") using an account that has access to the O365 Organization’s Azure Active Directory 
+1.	Login to the Azure Management Portal at [https://manage.windowsazure.com](https://manage.windowsazure.com "https://manage.azurewebsites.net") using an account that has access to the O365 Organization’s Azure Active Directory 
 2.	Click on the **ACTIVE DIRECTORY** option towards the bottom of the left side menu and select the appropriate directory in the directory listing (you may only have one directory).
 ![Azure Active Directory](http://i.imgur.com/GbW9j2R.jpg)
 3.	Next, click on the **APPLICATIONS** link in the top tab menu to display a list of applications registered in the directory.
