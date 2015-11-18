@@ -21,22 +21,22 @@ namespace GraphExplorerMVC.Models
             UserDetailModel data = new UserDetailModel();
 
             //get the user
-            var json = await GetJson(String.Format("https://graph.microsoft.com/beta/{0}", path), token);
+            var json = await GetJson(String.Format("https://graph.microsoft.com/v1.0/{0}", path), token);
             data.User = JsonConvert.DeserializeObject<UserModel>(json);
 
             //get the manager...might not exist
-            json = await GetJson(String.Format("https://graph.microsoft.com/beta/{0}/manager", path), token);
+            json = await GetJson(String.Format("https://graph.microsoft.com/v1.0/{0}/manager", path), token);
             if (json == null)
                 data.Manager = new UserModel();
             else
                 data.Manager = JsonConvert.DeserializeObject<UserModel>(json);
 
             //get the direct reports
-            json = await GetJson(String.Format("https://graph.microsoft.com/beta/{0}/directReports", path), token);
+            json = await GetJson(String.Format("https://graph.microsoft.com/v1.0/{0}/directReports", path), token);
             data.DirectReports = JObject.Parse(json).SelectToken("value").ToObject<List<UserModel>>();
 
             //get the files
-            json = await GetJson(String.Format("https://graph.microsoft.com/beta/{0}/files", path), token);
+            json = await GetJson(String.Format("https://graph.microsoft.com/v1.0/{0}/drive/root/children", path), token);
             if (json == null)
                 data.Files = new List<FileModel>();
             else

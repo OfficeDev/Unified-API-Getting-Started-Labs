@@ -45,7 +45,7 @@ function renderView(path, req, res) {
       var user = { user: null, manager: null, directReports: null, files: null };
       
       //get the user
-      getJson('graph.microsoft.com', '/beta/' + path, token.accessToken, function(result) {
+      getJson('graph.microsoft.com', '/v1.0/' + path, token.accessToken, function(result) {
         if (result != null) {
           user.user = JSON.parse(result);
           if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)
@@ -54,7 +54,7 @@ function renderView(path, req, res) {
       });
       
       //get the manager
-      getJson('graph.microsoft.com', '/beta/' + path + '/manager', token.accessToken, function(result) {
+      getJson('graph.microsoft.com', '/v1.0/' + path + '/manager', token.accessToken, function(result) {
         if (result != null) {
           user.manager = JSON.parse(result);
           if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)
@@ -63,7 +63,7 @@ function renderView(path, req, res) {
       });
       
       //get the direct reports
-      getJson('graph.microsoft.com', '/beta/' + path + '/directReports', token.accessToken, function(result) {
+      getJson('graph.microsoft.com', '/v1.0/' + path + '/directReports', token.accessToken, function(result) {
         if (result != null) {
           user.directReports = JSON.parse(result);
           if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)
@@ -72,7 +72,7 @@ function renderView(path, req, res) {
       });
       
       //get the files
-      getJson('graph.microsoft.com', '/beta/' + path + '/files', token.accessToken, function(result) {
+      getJson('graph.microsoft.com', '/v1.0/' + path + '/drive/root/children', token.accessToken, function(result) {
         if (result != null) {
           user.files = JSON.parse(result);
           if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)

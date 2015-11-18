@@ -12,13 +12,13 @@
 			var user = { user: null, manager: null, directReports: null, files: null };
 			
 			//get the user
-			$http.get("https://graph.microsoft.com/beta/" + path).then(function(r) { 
+			$http.get("https://graph.microsoft.com/v1.0/" + path).then(function(r) { 
 				user.user = r.data;
 				if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)
 					deferred.resolve(user); 
 			});
 			//get the manager
-			$http.get("https://graph.microsoft.com/beta/" + path + "/manager").then(function(r) { 
+			$http.get("https://graph.microsoft.com/v1.0/" + path + "/manager").then(function(r) { 
 				user.manager = r.data;
 				if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)
 					deferred.resolve(user); 
@@ -28,13 +28,13 @@
 					deferred.resolve(user); 
 			});
 			//get the directReports
-			$http.get("https://graph.microsoft.com/beta/" + path + "/directReports").then(function(r) { 
+			$http.get("https://graph.microsoft.com/v1.0/" + path + "/directReports").then(function(r) { 
 				user.directReports = r.data;
 				if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)
 					deferred.resolve(user); 
 			});
 			//get the files
-			$http.get("https://graph.microsoft.com/beta/" + path + "/files").then(function(r) { 
+			$http.get("https://graph.microsoft.com/v1.0/" + path + "/drive/root/children").then(function(r) { 
 				user.files = r.data;
 				if (user.user !== null && user.manager !== null && user.directReports !== null && user.files !== null)
 					deferred.resolve(user); 

@@ -57,7 +57,7 @@ else {
   $directReports = json_decode($response, true);
 
   //perform a REST query for the users files
-  $request = curl_init($path . "/files");
+  $request = curl_init($path . "/drive/root/children");
   curl_setopt($request, CURLOPT_HTTPHEADER, array(
     "Authorization: Bearer " . $token->accessToken,
     "Accept: application/json"));

@@ -6,7 +6,7 @@
         public static $authority = 'https://login.microsoftonline.com/common/';
         public static $redirectURI = 'https://localhost/gettingstarted/Login.php';
         public static $unifiedAPIResource = 'https://graph.microsoft.com';
-        public static $unifiedAPIEndpoint = 'https://graph.microsoft.com/beta/';
+        public static $unifiedAPIEndpoint = 'https://graph.microsoft.com/v1.0/';
         public static $tokenCache = 'TOKEN_CACHE';
         public static $apiRoot = 'API_ROOT';
     }

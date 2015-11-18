@@ -46,7 +46,7 @@
 
         function queryGraph(path) {
             //Get user's details
-            var query = "https://graph.microsoft.com/beta/" + path;
+            var query = "https://graph.microsoft.com/v1.0/" + path;
             var req = new XMLHttpRequest();
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
@@ -58,7 +58,7 @@
 
             //Get the manager's details
             req = new XMLHttpRequest();
-            query = "https://graph.microsoft.com/beta/" + path + "/manager";
+            query = "https://graph.microsoft.com/v1.0/" + path + "/manager";
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
             req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
@@ -72,7 +72,7 @@
 
             //Get direct reports
             req = new XMLHttpRequest();
-            query = "https://graph.microsoft.com/beta/" + path + "/directReports";
+            query = "https://graph.microsoft.com/v1.0/" + path + "/directReports";
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
             req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
@@ -87,7 +87,7 @@
 
             //Get files
             req = new XMLHttpRequest();
-            query = "https://graph.microsoft.com/beta/" + path + "/files";
+            query = "https://graph.microsoft.com/v1.0/" + path + "/drive/root/children";
             req.open("GET", query, false);
             req.setRequestHeader("Authorization", "Bearer " + graphToken);
             req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
