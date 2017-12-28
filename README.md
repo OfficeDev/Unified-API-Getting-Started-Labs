@@ -24,3 +24,5 @@ Please select the platform/language of your choice for the lab:
 - **Windows 10 (coming soon)**
 
 Don't see your platform/language? Please let use know!
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
