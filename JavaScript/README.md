@@ -2,7 +2,7 @@
 This folder contains a hands-on lab for getting started with the Office 365 Unified API using raw JavaScript (no libraries...not even JQuery). This solution is part of a broader getting started series across a number of platforms/languages, including AngularJS and Node.js.
 
 ## Step 1: Register the Application ##
-1.	Login to the Azure Management Portal at [https://manage.azurewebsites.net](https://manage.azurewebsites.net "https://manage.azurewebsites.net") using an account that has access to the O365 Organization’s Azure Active Directory 
+1.	Login to the Azure Management Portal at [https://manage.windowsazure.com](https://manage.windowsazure.com "https://manage.windowsazure.com") using an account that has access to the O365 Organization’s Azure Active Directory 
 2.	Click on the **ACTIVE DIRECTORY** option towards the bottom of the left side menu and select the appropriate directory in the directory listing (you may only have one directory).
 ![Azure Active Directory](http://i.imgur.com/GbW9j2R.jpg)
 3.	Next, click on the **APPLICATIONS** link in the top tab menu to display a list of applications registered in the directory.
@@ -73,7 +73,7 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
 5. Start by defining some constants specific to the app you registered in the previous section. This includes clientid and tenantid (the graphResource will be the same as below).
 
         var clientid = "0fe23ba5-f632-4a93-a898-b6b42adbfe2b";
-        var tenantid = "dxdemos.onmicrosoft.com";
+        var tenantid = "common"; //allows for multitenant
         var graphResource = "00000003-0000-0000-c000-000000000000";
         var state = "somestate";
         var nonce = "somenonce";
@@ -165,7 +165,7 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
 
         //Get files
         req = new XMLHttpRequest();
-        query = "https://graph.microsoft.com/beta/" + path + "/files";
+        query = "https://graph.microsoft.com/beta/" + path + "/drive/root/children";
         req.open("GET", query, false);
         req.setRequestHeader("Authorization", "Bearer " + graphToken);
         req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false");
@@ -188,6 +188,8 @@ This folder contains a hands-on lab for getting started with the Office 365 Unif
         }
         else if (params['access_token'] != null) {
             graphToken = params['access_token'];
+		    //clear access_token from address bar
+		    history.pushState({}, document.title, myUrl.origin + "#/")
             queryGraph("me");
         }
 
